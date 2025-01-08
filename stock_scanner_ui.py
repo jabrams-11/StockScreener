@@ -73,7 +73,7 @@ def fetch_premarket_data():
             {"left": "close", "operation": "in_range", "right": [1, 30]},
             {"left": "relative_volume_10d_calc", "operation": "greater", "right": 5},
             {"left": "float_shares_outstanding_current", "operation": "in_range", "right": [0, 10000000]},
-            {"left": "volume", "operation": "greater", "right": 10000000},
+            {"left": "volume", "operation": "greater", "right": 1000000},
             {"left": "premarket_change", "operation": "greater", "right": 20}
         ],
         "markets": ["america"],
@@ -172,7 +172,7 @@ with tab1:
     with criteria_cols[3]:
         st.metric("Max Float", "10M shares")
     with criteria_cols[4]:
-        st.metric("Min Volume", "10M shares")
+        st.metric("Min Volume", "1M shares")
 
     st.divider()
 
