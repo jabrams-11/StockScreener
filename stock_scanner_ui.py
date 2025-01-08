@@ -16,6 +16,7 @@ def fetch_stock_data():
         "content-type": "application/json",
         "origin": "https://www.tradingview.com",
         "referer": "https://www.tradingview.com/",
+        "cookie": "sessionid=yxgsef0qd29pn22vhop4gf82qks4cl89; sessionid_sign=v3:Q/k6Wro+H9ARwAu4rY64OXlwO2jbPbccQaMTMctyRe0=",
         "sec-fetch-dest": "empty",
         "sec-fetch-mode": "cors",
         "sec-fetch-site": "same-site",
