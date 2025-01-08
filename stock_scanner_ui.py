@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 import pandas as pd
 
-# IMPORTANT: set_page_config should typically be called at the very top
+
 st.set_page_config(page_title="Stock Scanner", layout="wide")
 
 def fetch_stock_data():
@@ -64,7 +64,7 @@ def process_stock_data(data):
 
 st.title("🚀 High Volume Stock Scanner")
 
-# Create two columns for the refresh controls and last updated time
+
 col1, col2 = st.columns([2, 1])
 with col1:
     if st.button("🔄 Refresh Data", type="primary"):
@@ -72,10 +72,10 @@ with col1:
 with col2:
     st.markdown(f"*Last updated: {datetime.now().strftime('%I:%M:%S %p')}*")
 
-# Add a visual separator
+
 st.divider()
 
-# Make the criteria section more visually appealing
+
 st.subheader("📊 Scanning Criteria")
 criteria_cols = st.columns(5)
 with criteria_cols[0]:
@@ -89,10 +89,10 @@ with criteria_cols[3]:
 with criteria_cols[4]:
     st.metric("Min Volume", "10M shares")
 
-# Add another separator before the results
+
 st.divider()
 
-# Update the results section
+
 try:
     data = fetch_stock_data()
     df = process_stock_data(data)
