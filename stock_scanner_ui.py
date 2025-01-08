@@ -28,7 +28,7 @@ def fetch_stock_data():
         "columns": [
             "name", "description", "close", "change", "volume",
             "relative_volume_10d_calc", "market_cap_basic", 
-            "sector", "exchange"
+            "sector", "exchange", "premarket_close"
         ],
         "filter": [
             {"left": "close", "operation": "in_range", "right": [1, 30]},
@@ -55,6 +55,7 @@ def fetch_premarket_data():
         "content-type": "application/json",
         "origin": "https://www.tradingview.com",
         "referer": "https://www.tradingview.com/",
+        "cookie": "sessionid=yxgsef0qd29pn22vhop4gf82qks4cl89; sessionid_sign=v3:Q/k6Wro+H9ARwAu4rY64OXlwO2jbPbccQaMTMctyRe0=",
         "sec-fetch-dest": "empty",
         "sec-fetch-mode": "cors",
         "sec-fetch-site": "same-site",
@@ -88,14 +89,25 @@ def fetch_premarket_data():
 def process_stock_data(data):
     stocks = []
     for item in data['data']:
+        current_price = item['d'][2]
+        premarket_close = item['d'][9] if len(item['d']) > 9 else None
+        
+        if premarket_close and premarket_close != 0:
+            premarket_change = ((current_price - premarket_close) / premarket_close) * 100
+            premarket_change_formatted = f"{premarket_change:+.2f}%"
+            premarket_change_colored = f"{'🟢' if premarket_change > 0 else '🔴'} {premarket_change_formatted}"
+        else:
+            premarket_change_colored = "N/A"
+
         stock = {
             'Symbol': item['d'][0],
             'Company': item['d'][1],
-            'Price': f"${item['d'][2]:.2f}",
-            'Change %': f"{item['d'][3]:.2f}%",
+            'Price': f"${current_price:.2f}",
+            'Change %': f"{'🟢' if item['d'][3] > 0 else '🔴'} {item['d'][3]:+.2f}%",
+            'Pre-Market→Current Price': premarket_change_colored,  
             'Volume': f"{item['d'][4]:,}",
             'Relative Volume': f"{item['d'][5]:.2f}x",
-            'Market Cap': f"${item['d'][6]:,}",
+            'Market Cap': f"${int(item['d'][6]):,}",
             'Sector': item['d'][7],
             'Exchange': item['d'][8]
         }
